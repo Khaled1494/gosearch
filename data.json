@@ -46,7 +46,12 @@
       "base_url": "https://www.tiktok.com/@{}",
       "follow_redirects": true,
       "errorType": "profilePresence",
-      "errorMsg": "shareMeta"
+      "errorMsg": "shareMeta",
+      "category": "social",
+      "check_username": "tiktok",
+      "present": [
+        "shareMeta"
+      ]
     },
     {
       "name": "About Me",
@@ -97,14 +102,18 @@
       "name": "Snapchat",
       "base_url": "https://www.snapchat.com/add/{}",
       "follow_redirects": true,
-      "errorType": "status_code"
+      "errorType": "status_code",
+      "category": "social",
+      "check_username": "teamsnapchat"
     },
     {
       "name": "Threads",
       "base_url": "https://www.threads.net/{}",
       "follow_redirects": true,
       "errorType": "unknown",
-      "errorCode": 200
+      "errorCode": 200,
+      "category": "social",
+      "check_username": "zuck"
     },
     {
       "name": "Tumblr",
@@ -183,7 +192,9 @@
       "base_url": "https://twitch.tv/{}",
       "follow_redirects": true,
       "errorType": "errorMsg",
-      "errorMsg": "<meta property='og:description' content='Twitch is the world&#39;s leading video platform and community for gamers.'>"
+      "errorMsg": "<meta property='og:description' content='Twitch is the world&#39;s leading video platform and community for gamers.'>",
+      "category": "streaming",
+      "check_username": "ninja"
     },
     {
       "name": "Rumble",
@@ -195,7 +206,9 @@
       "name": "Kick",
       "base_url": "https://kick.com/{}",
       "follow_redirects": true,
-      "errorType": "unknown"
+      "errorType": "unknown",
+      "category": "streaming",
+      "check_username": "xqc"
     },
     {
       "name": "Yandex Dzen",
@@ -226,7 +239,9 @@
       "base_url": "https://bsky.app/profile/{}.bsky.social",
       "url_probe": "https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor={}.bsky.social",
       "follow_redirects": true,
-      "errorType": "status_code"
+      "errorType": "status_code",
+      "category": "social",
+      "check_username": "jay"
     },
     {
       "name": "9GAG",
@@ -276,7 +291,9 @@
       "name": "LinkedIn",
       "base_url": "https://www.linkedin.com/in/{}",
       "follow_redirects": true,
-      "errorType": "unknown"
+      "errorType": "unknown",
+      "category": "professional",
+      "check_username": "williamhgates"
     },
     {
       "name": "Vimeo",
@@ -521,10 +538,10 @@
       "errorType": "status_code"
     },
     {
-        "name": "sourcehut",
-        "base_url": "https://sr.ht/~{}/",
-        "follow_redirects": true,
-        "errorType": "status_code"
+      "name": "sourcehut",
+      "base_url": "https://sr.ht/~{}/",
+      "follow_redirects": true,
+      "errorType": "status_code"
     },
     {
       "name": "Disqus",
@@ -547,7 +564,7 @@
     {
       "name": "Imgur",
       "base_url": "https://imgur.com/user/{}",
-      "url_probe":"https://api.imgur.com/account/v1/accounts/{}?client_id=546c25a59c58ad7",
+      "url_probe": "https://api.imgur.com/account/v1/accounts/{}?client_id=546c25a59c58ad7",
       "follow_redirects": true,
       "errorType": "status_code"
     },
@@ -720,40 +737,40 @@
     },
     {
       "name": "CGTrader",
-      "base_url":"https://www.cgtrader.com/{}",
+      "base_url": "https://www.cgtrader.com/{}",
       "follow_redirects": true,
       "errorType": "status_code"
     },
     {
       "name": "CNET",
-      "base_url":"https://www.cnet.com/profiles/{}/",
+      "base_url": "https://www.cnet.com/profiles/{}/",
       "follow_redirects": true,
       "errorType": "status_code"
     },
     {
       "name": "CSSBattle",
-      "base_url":"https://cssbattle.dev/player/{}",
+      "base_url": "https://cssbattle.dev/player/{}",
       "follow_redirects": true,
       "errorType": "errorMsg",
       "errorMsg": "<title>CSSBattle</title>"
     },
     {
       "name": "CTAN",
-      "base_url":"https://ctan.org/author/{}",
+      "base_url": "https://ctan.org/author/{}",
       "follow_redirects": true,
       "errorType": "status_code"
     },
     {
       "name": "Caddy Community",
-      "base_url":"https://caddy.community/u/{}",
+      "base_url": "https://caddy.community/u/{}",
       "follow_redirects": true,
       "errorType": "status_code"
     },
     {
-     "name": "Car Talk Community",
-      "base_url":"https://community.cartalk.com/u/{}",
+      "name": "Car Talk Community",
+      "base_url": "https://community.cartalk.com/u/{}",
       "follow_redirects": true,
-      "errorType": "status_code" 
+      "errorType": "status_code"
     },
     {
       "name": "Career.habr",
@@ -1024,7 +1041,7 @@
     {
       "name": "Freelancer",
       "base_url": "https://www.freelancer.com/u/{}",
-      "follow_redirects":true,
+      "follow_redirects": true,
       "errorType": "status_code"
     },
     {
@@ -1109,7 +1126,7 @@
     {
       "name": "GoodReads",
       "base_url": "https://www.goodreads.com/{}",
-      "follow_redirects":true,
+      "follow_redirects": true,
       "errorType": "status_code"
     },
     {
@@ -1245,7 +1262,7 @@
     {
       "name": "PyPi",
       "base_url": "https://pypi.org/user/{}",
-      "url_probe":"https://pypi.org/_includes/administer-user-include/{}",
+      "url_probe": "https://pypi.org/_includes/administer-user-include/{}",
       "follow_redirects": true,
       "errorType": "status_code"
     },
@@ -1331,7 +1348,9 @@
       "base_url": "https://kick.com/{}",
       "url_probe": "https://kick.com/api/v2/channels/{}",
       "follow_redirects": true,
-      "errorType": "unknown"
+      "errorType": "status_code",
+      "category": "streaming",
+      "check_username": "xqc"
     },
     {
       "name": "Kongregate",
@@ -1898,22 +1917,22 @@
       "errorType": "status_code"
     },
     {
-      "name":"YouPay.me",
-      "base_url":"https://youpay.me/{}",
-      "follow_redirects":true,
-      "errorType":"unknown"
+      "name": "YouPay.me",
+      "base_url": "https://youpay.me/{}",
+      "follow_redirects": true,
+      "errorType": "unknown"
     },
     {
-      "name":"JPG6",
-      "base_url":"https://jpg6.su/{}",
-      "follow_redirects":true,
-      "errorType":"status_code"
+      "name": "JPG6",
+      "base_url": "https://jpg6.su/{}",
+      "follow_redirects": true,
+      "errorType": "status_code"
     },
     {
-      "name":"Hackster",
-      "base_url":"https://hackster.io/{}",
-      "follow_redirects":true,
-      "errorType":"status_code"
+      "name": "Hackster",
+      "base_url": "https://hackster.io/{}",
+      "follow_redirects": true,
+      "errorType": "status_code"
     },
     {
       "name": "frail.lol",
@@ -1923,10 +1942,61 @@
       "errorMsg": "No page found. This username is still available."
     },
     {
-      "name":"hoodri.ch",
-      "base_url":"https://hoodri.ch/{}",
+      "name": "hoodri.ch",
+      "base_url": "https://hoodri.ch/{}",
       "follow_redirects": true,
-      "errorType":"status_code"
+      "errorType": "status_code"
+    },
+    {
+      "name": "Haraj",
+      "base_url": "https://haraj.com.sa/users/{}",
+      "follow_redirects": true,
+      "errorType": "status_code",
+      "category": "gulf",
+      "check_username": "haraj",
+      "timeout_ms": 20000
+    },
+    {
+      "name": "OpenSooq",
+      "base_url": "https://sa.opensooq.com/ar/profile/{}",
+      "follow_redirects": true,
+      "errorType": "status_code",
+      "category": "gulf",
+      "check_username": "opensooq",
+      "timeout_ms": 20000
+    },
+    {
+      "name": "Anghami",
+      "base_url": "https://www.anghami.com/profile/{}",
+      "follow_redirects": true,
+      "errorType": "status_code",
+      "category": "gulf",
+      "check_username": "anghami",
+      "timeout_ms": 20000
+    },
+    {
+      "name": "Dubizzle",
+      "base_url": "https://dubai.dubizzle.com/user/{}/",
+      "follow_redirects": true,
+      "errorType": "status_code",
+      "category": "gulf",
+      "timeout_ms": 20000
+    },
+    {
+      "name": "Property Finder Agent",
+      "base_url": "https://www.propertyfinder.ae/en/agent/{}",
+      "follow_redirects": true,
+      "errorType": "status_code",
+      "category": "gulf",
+      "timeout_ms": 20000
+    },
+    {
+      "name": "Bayt",
+      "base_url": "https://www.bayt.com/en/people/{}/",
+      "follow_redirects": true,
+      "errorType": "status_code",
+      "category": "gulf",
+      "timeout_ms": 20000
     }
-    ]
+  ]
 }
