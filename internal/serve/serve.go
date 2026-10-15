@@ -62,23 +62,49 @@ func (s *Server) handleSearchSSE(w http.ResponseWriter, r *http.Request) {
 
 	var (
 		mu      sync.Mutex
+		writeMu sync.Mutex
 		results []models.Result
 	)
+
+	writeEvent := func(format string, args ...interface{}) {
+		writeMu.Lock()
+		defer writeMu.Unlock()
+		fmt.Fprintf(w, format, args...)
+		flusher.Flush()
+	}
 
 	opts.OnResult = func(res models.Result) {
 		mu.Lock()
 		results = append(results, res)
 		mu.Unlock()
 		payload, _ := json.Marshal(res)
-		fmt.Fprintf(w, "event: result\ndata: %s\n\n", payload)
-		flusher.Flush()
+		writeEvent("event: result\ndata: %s\n\n", payload)
 	}
 
 	start := time.Now()
-	fmt.Fprintf(w, "event: start\ndata: {\"username\":%q,\"sites\":%d}\n\n", username, len(s.Data.Websites))
-	flusher.Flush()
+	writeEvent("event: start\ndata: {\"username\":%q,\"sites\":%d}\n\n", username, len(s.Data.Websites))
+
+	// Keepalive comments so proxies/browsers do not idle-close long searches.
+	stopKeepalive := make(chan struct{})
+	var keepaliveWG sync.WaitGroup
+	keepaliveWG.Add(1)
+	go func() {
+		defer keepaliveWG.Done()
+		t := time.NewTicker(5 * time.Second)
+		defer t.Stop()
+		for {
+			select {
+			case <-stopKeepalive:
+				return
+			case <-t.C:
+				writeEvent(": keepalive\n\n")
+			}
+		}
+	}()
 
 	search.Run(s.Data, opts)
+	close(stopKeepalive)
+	keepaliveWG.Wait()
 
 	mu.Lock()
 	summary := map[string]interface{}{
@@ -86,13 +112,12 @@ func (s *Server) handleSearchSSE(w http.ResponseWriter, r *http.Request) {
 		"total":      len(results),
 		"found":      countStatus(results, "found"),
 	}
+	finished := append([]models.Result(nil), results...)
 	mu.Unlock()
 	payload, _ := json.Marshal(summary)
-	fmt.Fprintf(w, "event: done\ndata: %s\n\n", payload)
-	flusher.Flush()
+	writeEvent("event: done\ndata: %s\n\n", payload)
 
-	// Stash last results in memory for download (per-username key via query on download).
-	storeResults(username, results)
+	storeResults(username, finished)
 }
 
 func (s *Server) handleDownload(w http.ResponseWriter, r *http.Request) {
@@ -233,7 +258,9 @@ const indexHTML = `<!DOCTYPE html>
       rows.appendChild(tr);
       status.textContent = 'Live: ' + found + ' found / ' + total + ' checked';
     });
+    var finished = false;
     es.addEventListener('done', function(ev){
+      finished = true;
       var d = JSON.parse(ev.data);
       status.textContent = 'Done in ' + d.elapsed_ms + 'ms — ' + d.found + ' found / ' + d.total + ' sites';
       go.disabled = false;
@@ -244,6 +271,7 @@ const indexHTML = `<!DOCTYPE html>
       es.close();
     });
     es.onerror = function(){
+      if (finished) return;
       status.textContent = 'Connection closed or failed.';
       go.disabled = false;
       if (es) es.close();
