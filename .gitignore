@@ -45,3 +45,6 @@ src/*.txt
 
 # Claude Code
 CLAUDE.md
+# GoSearch watch / local state
+.gosearch-watch-state.json
+*_emails.txt

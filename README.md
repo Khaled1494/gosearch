@@ -5,103 +5,165 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/ibnaleem/gosearch/actions/workflows/go.yml/badge.svg?event=push" alt="GitHub Actions Badge"> <img src="https://img.shields.io/github/last-commit/ibnaleem/gosearch"> <img src="https://img.shields.io/github/commit-activity/w/ibnaleem/gosearch"> <img src="https://img.shields.io/github/contributors/ibnaleem/gosearch"> <img alt="Number of websites" src="https://img.shields.io/badge/websites-305-blue"> <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ibnaleem/gosearch"> <img alt="GitHub License" src="https://img.shields.io/github/license/ibnaleem/gosearch">
-</p>
-<hr>
-
-<div align="center">
-  <a href="https://trendshift.io/repositories/13662?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-13662" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/13662/weekly?language=Go" alt="ibnaleem%2Fgosearch | Trendshift" width="250" height="55"/></a>
-  <a href="https://trendshift.io/repositories/13662?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-13662" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/13662" alt="ibnaleem%2Fgosearch | Trendshift" width="250" height="55"/></a>
-</div>
-
-> [!WARNING]  
-> For your own privacy and security, ***never download GoSearch from anywhere other than this repository.*** In the future, I will publish releases with `SHA256` hashes and `.gpg` signed binaries with my PGP key
-
-## Overview
-<p align='center'>
-<img src='img/1.png' height=80% width=80%><br>
-<img src='img/2.png' height=80% width=80%><br>
-<img src='img/3.png' height=80% width=80%><br>
-<img src='img/4.png' height=80% width=80%><br>
+  <img src="https://github.com/ibnaleem/gosearch/actions/workflows/go.yml/badge.svg?event=push" alt="GitHub Actions Badge"> <img src="https://img.shields.io/github/last-commit/ibnaleem/gosearch"> <img src="https://img.shields.io/github/commit-activity/w/ibnaleem/gosearch"> <img src="https://img.shields.io/github/contributors/ibnaleem/gosearch"> <img alt="Number of websites" src="https://img.shields.io/badge/websites-300+-blue"> <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ibnaleem/gosearch"> <img alt="GitHub License" src="https://img.shields.io/github/license/ibnaleem/gosearch">
 </p>
 
-You don't have time searching every profile with a username. Instead, you can leverage concurrency and a binary that does the work for you, and then some.
-
-I initially wrote this project to learn Go, an upcoming programming language used for backend services. I decided to create a Sherlock clone, addressing some of its faults, limitations, and adding more features. This eventually led to a community driven OSINT tool that was [praised in the OSINT letter.](https://osintnewsletter.com/p/62)
-
-GoSearch isn't limited to searching websites; it can search **900k leaked credentials** from [HudsonRock's Cybercrime Intelligence API](https://cavalier.hudsonrock.com/api/json/v2/osint-tools/search-by-username?username=mrrobot), over **3.2 billion leaked credentials** from [ProxyNova's Combination Of Many Breaches API](https://www.proxynova.com/tools/comb/), and **18 billion leaked credentials** from BreachDirectory.org with an API key (see [Use Cases](#use-cases))
-
-## Installation
 > [!WARNING]  
-> If you are on 32-bit architecture, please [use this branch](https://github.com/ibnaleem/gosearch/tree/32-bit) or GoSearch will fail to build. For an in-depth overview of this issue, please see [#72](https://github.com/ibnaleem/gosearch/issues/72)
+> For your own privacy and security, ***never download GoSearch from anywhere other than this repository.***
 
-> [!WARNING]  
-> If you're using Windows Defender, it might mistakenly flag GoSearch as malware. Rest assured, GoSearch is not malicious; you can review the full source code yourself to verify this. For an in-depth overview of this issue, please see [#90](https://github.com/ibnaleem/gosearch/issues/90)
-```
-$ go install github.com/ibnaleem/gosearch@latest
-```
-### Unix:
-```
-$ gosearch -u [username]
-```
-### Windows
-```
-C:\Users\Bob> gosearch.exe -u [username]
-```
-## Use Cases
-Ideally, it is best practice to run GoSearch with the `--no-false-positives` flag:
-```
-$ gosearch -u [USERNAME] --no-false-positives
-```
-This will display profiles GoSearch is confident exist on a website. GoSearch also allows you to search [BreachDirectory](https://breachdirectory.org) for compromised passwords associated with a specific username. For this, you must [obtain an API key](https://rapidapi.com/rohan-patra/api/breachdirectory) and provide it with the `-b` flag:
-```
-$ gosearch -u [USERNAME] -b [API-KEY] --no-false-positives
-```
-If GoSearch finds password hashes, it will attempt to crack them using [Weakpass](https://weakpass.com). The success rate is nearly 100%, as Weakpass uses a large wordlist of common data-wells, which align with the breaches reported by [BreachDirectory](https://breachdirectory.org). Every single password hash that's been found in [BreachDirectory](https://breachdirectory.org) has been cracked by [Weakpass](https://weakpass.com).
+---
 
-If you're not using BreachDirectory, GoSearch will search for breaches on HudsonRock's Cybercrime Intelligence & ProxyNova's Databases, respectively. It will also search common TLDs for any domains associated with a given username. This is done whether BreachDirectory is searched or not.
+## English
 
-## I Don't Have a Username
-If you're uncertain about a person's username, you could try generating some by using [urbanadventurer/username-anarchy](https://github.com/urbanadventurer/username-anarchy). Note that `username-anarchy` can only run in Unix terminals (Mac/Linux)
+### Overview
+
+GoSearch is a fast, concurrent OSINT username search tool written in Go. It probes **300+** sites, colour-codes uncertain hits, and can also search breach databases (HudsonRock, ProxyNova, BreachDirectory).
+
+This fork adds Gulf/Arabic platforms, stronger response matching, structured reports, a local web UI, and self-monitoring.
+
+### Installation
+
+```bash
+go install github.com/ibnaleem/gosearch@latest
+# or from this repo:
+go build -o gosearch .
 ```
-$ git clone https://github.com/urbanadventurer/username-anarchy
-$ cd username-anarchy
-$ (username-anarchy) ./username-anarchy firstname lastname
+
+### Basic usage
+
+```bash
+gosearch -u [username]
+gosearch -u [username] --no-false-positives
 ```
-## Why `GoSearch`?
-`GoSearch` is inspired by [Sherlock](https://github.com/sherlock-project/sherlock), a popular username search tool. However, `GoSearch` improves upon Sherlock by addressing several of its key limitations:
 
-1. Sherlock is Python-based, which makes it slower compared to Go.
-2. Sherlock is outdated and lacks updates.
-3. Sherlock sometimes reports false positives as valid results.
-4. Sherlock frequently misses actual usernames, leading to false negatives.
-5. Sherlock does not search HudsonRock's Cybercrime Intelligence database
-6. Sherlock does not search ProxyNova's database
-7. Sherlock does not search BreachDirectory's database
+### New flags
 
-The primary issue with Sherlock is false negatives—when a username exists on a platform but is not detected. The secondary issue is false positives, where a username is incorrectly flagged as available. `GoSearch` tackles these problems by colour-coding uncertain results as yellow which indicates potential false positives. This allows users to easily filter out irrelevant links.
+| Flag | Description |
+|------|-------------|
+| `--output csv\|json\|html` | Write a structured report (HTML is a single sortable file) |
+| `-o <dir>` | Directory for output files (default: current directory) |
+| `--concurrency <n>` | Max parallel site probes (default: `20`) |
+| `--rate-limit <duration>` | Polite delay between request starts (e.g. `50ms`) |
+| `--timeout <duration>` | Default per-site timeout (default: `30s`) |
+| `--retries <n>` | Retries with exponential backoff (default: `2`) |
+| `--check-sites` | Test each site with a known-existing and a random username; report broken entries |
+| `--watch <file>` | Re-check usernames listed in a file; print only **new/changed** findings |
+| `--watch-state <file>` | Watch state JSON (default: `.gosearch-watch-state.json`) |
+
+Examples:
+
+```bash
+gosearch -u alice --output html --concurrency 15 --rate-limit 50ms
+gosearch --check-sites --concurrency 10 --rate-limit 100ms
+gosearch --watch my-usernames.txt
+```
+
+`my-usernames.txt` is one username per line (`#` comments allowed).
+
+### Web UI
+
+```bash
+gosearch serve --port 8080
+```
+
+Open `http://localhost:8080`, enter a username, watch results stream live (SSE), then download HTML/JSON/CSV.
+
+### Accuracy / site data
+
+Each site in `data.json` can use:
+
+- Legacy `errorType`: `status_code`, `errorMsg`, `profilePresence`, `response_url`, `unknown`
+- `present` / `absent`: body substrings that must appear / must not appear
+- `response_url`: final redirect URL that means “not found”
+- `timeout_ms`, `retries`, `category`, `check_username`
+
+Local `data.json` is preferred (fork customizations are kept). Upstream is only downloaded if no local file exists.
+
+Gulf/Arabic and popular platforms added or tagged include **Haraj**, **OpenSooq**, **Anghami**, **Dubizzle**, **Bayt**, plus **Snapchat**, **TikTok**, **Twitch**, **Threads**, **Kick**, and **Bluesky**.
+
+> Existing site entries are never deleted without asking.
+
+### Breach / OSINT extras
+
+```bash
+gosearch -u [USERNAME] -b [BREACHDIRECTORY-API-KEY] --no-false-positives
+```
+
+HudsonRock and ProxyNova run without an API key. Common TLDs are also checked for the username as a domain.
+
+---
+
+## العربية
+
+### نظرة عامة
+
+**GoSearch** أداة OSINT سريعة مكتوبة بلغة Go للبحث عن اسم مستخدم عبر **أكثر من 300** موقعًا، مع تمييز النتائج غير المؤكدة، ودعم قواعد بيانات التسريبات.
+
+هذا الفرع يضيف منصات خليجية/عربية، مطابقة أدق للاستجابات، تقارير منظمة، واجهة ويب محلية، ومراقبة ذاتية لأسماءك.
+
+### التثبيت
+
+```bash
+go install github.com/ibnaleem/gosearch@latest
+# أو من هذا المستودع:
+go build -o gosearch .
+```
+
+### الاستخدام الأساسي
+
+```bash
+gosearch -u [اسم_المستخدم]
+gosearch -u [اسم_المستخدم] --no-false-positives
+```
+
+### الخيارات الجديدة
+
+| الخيار | الوصف |
+|--------|--------|
+| `--output csv\|json\|html` | حفظ تقرير منظم (HTML ملف واحد مع جدول قابل للفرز) |
+| `-o <مجلد>` | مجلد حفظ المخرجات |
+| `--concurrency <n>` | أقصى عدد طلبات متوازية (افتراضي `20`) |
+| `--rate-limit <مدة>` | تأخير مهذب بين الطلبات (مثل `50ms`) |
+| `--timeout <مدة>` | مهلة كل موقع (افتراضي `30s`) |
+| `--retries <n>` | إعادة المحاولة مع تراجع أسي |
+| `--check-sites` | اختبار كل موقع بمستخدم موجود ومعروف وآخر عشوائي |
+| `--watch <ملف>` | إعادة فحص قائمة أسماءك وطباعة التغييرات فقط |
+| `--watch-state <ملف>` | ملف حالة المراقبة JSON |
+
+أمثلة:
+
+```bash
+gosearch -u alice --output html --concurrency 15 --rate-limit 50ms
+gosearch --check-sites
+gosearch --watch my-usernames.txt
+```
+
+### واجهة الويب
+
+```bash
+gosearch serve --port 8080
+```
+
+افتح `http://localhost:8080`، أدخل اسم المستخدم، شاهد النتائج مباشرة (SSE)، ثم حمّل التقرير.
+
+### الدقة وبيانات المواقع
+
+يدعم `data.json` حقول `present` / `absent` وفحص رابط إعادة التوجيه النهائي، بالإضافة لأنواع الأخطاء السابقة. يُفضَّل الملف المحلي حتى تبقى إضافات المنصات الخليجية محفوظة.
+
+### المساهمة
+
+انظر [CONTRIBUTING.md](CONTRIBUTING.md). لا تحذف إدخالات مواقع موجودة دون مناقشة.
+
+---
 
 ## Contributing
-Please see [CONTRIBUTING.md.](https://github.com/ibnaleem/gosearch/blob/main/CONTRIBUTING.md)
 
-<table><tr><td align="center"><a href="https://github.com/ibnaleem"><img alt="ibnaleem" src="https://avatars.githubusercontent.com/u/134088573?v=4" width="117" /><br />ibnaleem</a></td><td align="center"><a href="https://github.com/shelepuginivan"><img alt="shelepuginivan" src="https://avatars.githubusercontent.com/u/110753839?v=4" width="117" /><br />shelepuginivan</a></td><td align="center"><a href="https://github.com/arealibusadrealiora"><img alt="arealibusadrealiora" src="https://avatars.githubusercontent.com/u/113445322?v=4" width="117" /><br />arealibusadrealiora</a></td><td align="center"><a href="https://github.com/AtahanPoyraz"><img alt="AtahanPoyraz" src="https://avatars.githubusercontent.com/u/129458900?v=4" width="117" /><br />AtahanPoyraz</a></td></tr><tr><td align="center"><a href="https://github.com/vickychhetri"><img alt="vickychhetri" src="https://avatars.githubusercontent.com/u/82648574?v=4" width="117" /><br />vickychhetri</a></td><td align="center"><a href="https://github.com/olekukonko"><img alt="olekukonko" src="https://avatars.githubusercontent.com/u/2615393?v=4" width="117" /><br />olekukonko</a></td><td align="center"><a href="https://github.com/CptIdea"><img alt="CptIdea" src="https://avatars.githubusercontent.com/u/59538729?v=4" width="117" /><br />CptIdea</a></td></tr><tr><td align="center"><a href="https://github.com/anotherhadi"><img alt="anotherhadi" src="https://avatars.githubusercontent.com/u/112569860?v=4" width="117" /><br />anotherhadi</a></td><td align="center"><a href="https://github.com/paulpogoda"><img alt="paulpogoda" src="https://avatars.githubusercontent.com/u/170966925?v=4" width="117" /><br />paulpogoda</a></td><td align="center"><a href="https://github.com/apps/dependabot"><img alt="dependabot[bot]" src="https://avatars.githubusercontent.com/in/29110?v=4" width="117" /><br />dependabot[bot]</a></td></tr></table>
+Please see [CONTRIBUTING.md](https://github.com/ibnaleem/gosearch/blob/main/CONTRIBUTING.md).
 
 ## LICENSE
-This project is licensed under the GNU General Public License - see the [LICENSE](https://github.com/ibnaleem/gosearch/blob/main/LICENSE) file for details.
+
+This project is licensed under the GNU General Public License — see [LICENSE](LICENSE).
 
 ## Support
-[![BuyMeACoffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/gosearch)
-[![Thanks.dev](https://img.shields.io/badge/thanks.dev-0a0a0a?style=for-the-badge&logo=tv-time&logoColor=white)](https://thanks.dev/u/gh/ibnaleem)
-### Bitcoin
-```
-bc1qjrtyq8m7urapu7cvmvrrs6m7qkh2jpn5wqezfl
-```
-## Star History
 
-<a href="https://www.star-history.com/?repos=ibnaleem%2Fgosearch&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=ibnaleem/gosearch&type=date&theme=dark&legend=top-left&sealed_token=vqdvRKhjoZ2gp3atvVcJi4MS3t2vRYEz9nc1DaVPAAlJ_2pEbS9S-rEfP1lWlbDtHmC-YnCDoYFoEVlfSOzVu0c8QwbjqCvpvRcBJ-V_BQcuxfbbzpzRAn3M8AIG230807aKFtEYnLQ7-JS9eIy7RUjsG5w9PHBF9Vi9aK6OcXXgDa2gd4wNXa4PztHZ" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=ibnaleem/gosearch&type=date&legend=top-left&sealed_token=vqdvRKhjoZ2gp3atvVcJi4MS3t2vRYEz9nc1DaVPAAlJ_2pEbS9S-rEfP1lWlbDtHmC-YnCDoYFoEVlfSOzVu0c8QwbjqCvpvRcBJ-V_BQcuxfbbzpzRAn3M8AIG230807aKFtEYnLQ7-JS9eIy7RUjsG5w9PHBF9Vi9aK6OcXXgDa2gd4wNXa4PztHZ" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=ibnaleem/gosearch&type=date&legend=top-left&sealed_token=vqdvRKhjoZ2gp3atvVcJi4MS3t2vRYEz9nc1DaVPAAlJ_2pEbS9S-rEfP1lWlbDtHmC-YnCDoYFoEVlfSOzVu0c8QwbjqCvpvRcBJ-V_BQcuxfbbzpzRAn3M8AIG230807aKFtEYnLQ7-JS9eIy7RUjsG5w9PHBF9Vi9aK6OcXXgDa2gd4wNXa4PztHZ" />
- </picture>
-</a>
+[![BuyMeACoffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/gosearch)
