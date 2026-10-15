@@ -59,7 +59,7 @@ func WriteEmailToFile(username string, email string) {
 			log.Fatal("Error checking output directory:", err)
 		}
 	}
-	
+
 	filePath := filepath.Join(config.OutputDir, fmt.Sprintf("%s_emails.txt", username))
 
 	f, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, os.ModePerm)
@@ -94,10 +94,30 @@ func BuildDomains(username string) []string {
 	return domains
 }
 
+func loadJSONFile(path string) (models.Data, error) {
+	jsonData, err := os.ReadFile(path)
+	if err != nil {
+		return models.Data{}, err
+	}
+	var data models.Data
+	if err := json.Unmarshal(jsonData, &data); err != nil {
+		return models.Data{}, fmt.Errorf("error unmarshalling JSON from %s: %w", path, err)
+	}
+	return data, nil
+}
+
+// UnmarshalJSON loads site data, preferring the local data.json so fork
+// customizations are preserved. Falls back to downloading upstream only
+// when no local file is available.
 func UnmarshalJSON() (models.Data, error) {
-	err := os.Remove("data.json")
-	if err != nil && !os.IsNotExist(err) {
-		return models.Data{}, fmt.Errorf("error deleting old data.json: %w", err)
+	candidates := []string{"data.json"}
+	if exe, err := os.Executable(); err == nil {
+		candidates = append(candidates, filepath.Join(filepath.Dir(exe), "data.json"))
+	}
+	for _, path := range candidates {
+		if data, err := loadJSONFile(path); err == nil && len(data.Websites) > 0 {
+			return data, nil
+		}
 	}
 
 	url := "https://raw.githubusercontent.com/ibnaleem/gosearch/refs/heads/main/data.json"
@@ -121,6 +141,9 @@ func UnmarshalJSON() (models.Data, error) {
 	if err != nil {
 		return models.Data{}, fmt.Errorf("error unmarshalling JSON: %w", err)
 	}
+
+	// Cache a local copy for offline / fork use without overwriting if create fails.
+	_ = os.WriteFile("data.json", jsonData, 0o644)
 
 	return data, nil
 }
